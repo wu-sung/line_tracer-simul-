@@ -20,8 +20,14 @@ class Pub : public rclcpp::Node
         void publish_msg();
         std_msgs::msg::Header hdr;
         sensor_msgs::msg::CompressedImage::SharedPtr msg;
-        cv::VideoCapture cap;
+        cv::VideoCapture cap;  // cv::VideoCapture 객체를 여기서 초기화하지 않음
         cv::Mat frame;
+
+        std::string src = "nvarguscamerasrc sensor-id=0 ! \
+            video/x-raw(memory:NVMM), width=(int)640, height=(int)360, \
+            format=(string)NV12 ! nvvidconv flip-method=0 ! video/x-raw, \
+            width=(int)640, height=(int)360, format=(string)BGRx ! \
+            videoconvert ! video/x-raw, format=(string)BGR ! appsink"; 
 
         rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr sub_;
         void mysub_callback(Dxl& mdxl, const std_msgs::msg::Int32::SharedPtr intmsg);
@@ -32,5 +38,4 @@ class Pub : public rclcpp::Node
         Dxl dxl;
         int lvel, rvel, err;
 };
-#endif //_PUB_HPP_
-
+#endif //_JETSON_HPP_

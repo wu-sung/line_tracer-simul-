@@ -25,7 +25,7 @@ void Sub::mysub_callback(const sensor_msgs::msg::CompressedImage::SharedPtr msg)
     noise = gray(cv::Rect(0, 270, 640, 90));
     cv::GaussianBlur(noise, noise, cv::Size(5, 5), 0, 0);
 
-    double desiredMean = 70;
+    double desiredMean = 60;
     cv::Scalar meanValue = cv::mean(noise);
     double b = desiredMean - meanValue.val[0];
     result = noise + b;
@@ -69,27 +69,27 @@ void Sub::mysub_callback(const sensor_msgs::msg::CompressedImage::SharedPtr msg)
         }
     }
 
-    centerq.push(pos.x);
-    centeryq.push(pos.y);
+    // centerq.push(pos.x);
+    // centeryq.push(pos.y);
 
-    if (abs(centerq.back() - centerq.front()) > 200) {
-        centerq.push(centerq.front());
-        centerq.pop();
-        centerq.push(centerq.back());
-        centerq.pop();
-    }
-    if (abs(centeryq.back() - centeryq.front()) > 60) {
-        centeryq.push(centeryq.front());
-        centeryq.pop();
-        centeryq.push(centeryq.back());
-        centeryq.pop();
-    }
-    if(abs(err - (cameracentroidsx - centerq.back()))>100){
-        centerq.push(centerq.front());
-        centerq.pop();
-        centerq.push(centerq.back());
-        centerq.pop();
-    }
+    // if (abs(centerq.back() - centerq.front()) > 200) {
+    //     centerq.push(centerq.front());
+    //     centerq.pop();
+    //     centerq.push(centerq.back());
+    //     centerq.pop();
+    // }
+    // if (abs(centeryq.back() - centeryq.front()) > 60) {
+    //     centeryq.push(centeryq.front());
+    //     centeryq.pop();
+    //     centeryq.push(centeryq.back());
+    //     centeryq.pop();
+    // }
+    // if(abs(err - (cameracentroidsx - centerq.back()))>100){
+    //     centerq.push(centerq.front());
+    //     centerq.pop();
+    //     centerq.push(centerq.back());
+    //     centerq.pop();
+    // }
 
     centerqbacksave = centerq.back();
     centerysave = centeryq.back();
